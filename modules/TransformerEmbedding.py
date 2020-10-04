@@ -1,11 +1,11 @@
 
 
-from backend.embeddings import TokenEmbedding
+from fastNLP.embeddings import TokenEmbedding
 import torch
-from backend import Vocabulary
+from fastNLP import Vocabulary
 import torch.nn.functional as F
-from backend import logger
-from backend.embeddings.utils import _construct_char_vocab_from_vocab, get_embeddings
+from fastNLP import logger
+from fastNLP.embeddings.utils import _construct_char_vocab_from_vocab, get_embeddings
 from torch import nn
 from .transformer import TransformerEncoder
 

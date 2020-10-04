@@ -1,13 +1,13 @@
 
-from backend.io import Pipe, ConllLoader
-from backend.io import DataBundle
-from backend.io.pipe.utils import _add_words_field, _indexize
-from backend.io.pipe.utils import iob2, iob2bioes
-from backend.io.pipe.utils import _add_chars_field
-from backend.io.utils import check_loader_paths
+from fastNLP.io import Pipe, ConllLoader
+from fastNLP.io import DataBundle
+from fastNLP.io.pipe.utils import _add_words_field, _indexize
+from fastNLP.io.pipe.utils import iob2, iob2bioes
+from fastNLP.io.pipe.utils import _add_chars_field
+from fastNLP.io.utils import check_loader_paths
 
-from backend.io import Conll2003NERLoader, WNUT_17Loader
-from backend import Const
+from fastNLP.io import Conll2003NERLoader, WNUT_17Loader
+from fastNLP import Const
 
 def word_shape(words):
     shapes = []
@@ -31,7 +31,7 @@ def word_shape(words):
 class Conll2003NERPipe(Pipe):
     """
     Conll2003的NER任务的处理Pipe, 该Pipe会（1）复制raw_words列，并命名为words; (2）在words, target列建立词表
-    (创建 :class:`backend.Vocabulary` 对象，所以在返回的DataBundle中将有两个Vocabulary); (3）将words，target列根据相应的
+    (创建 :class:`fastNLP.Vocabulary` 对象，所以在返回的DataBundle中将有两个Vocabulary); (3）将words，target列根据相应的
     Vocabulary转换为index。
     经过该Pipe过后，DataSet中的内容如下所示
 
@@ -85,7 +85,7 @@ class Conll2003NERPipe(Pipe):
            "[AL-AIN, United, Arab, ...]", "[B-LOC, B-LOC, I-LOC, ...]"
            "[...]", "[...]"
 
-        :param ~backend.DataBundle data_bundle: 传入的DataBundle中的DataSet必须包含raw_words和ner两个field，且两个field的内容均为List[str]在传入DataBundle基础上原位修改。
+        :param ~fastNLP.DataBundle data_bundle: 传入的DataBundle中的DataSet必须包含raw_words和ner两个field，且两个field的内容均为List[str]在传入DataBundle基础上原位修改。
         :return DataBundle:
         """
         # 转换tag
@@ -119,7 +119,7 @@ class Conll2003NERPipe(Pipe):
     def process_from_file(self, paths) -> DataBundle:
         """
 
-        :param paths: 支持路径类型参见 :class:`backend.io.loader.ConllLoader` 的load函数。
+        :param paths: 支持路径类型参见 :class:`fastNLP.io.loader.ConllLoader` 的load函数。
         :return: DataBundle
         """
         # 读取数据
@@ -129,10 +129,10 @@ class Conll2003NERPipe(Pipe):
         return data_bundle
 
 
-class ENNERPipe(Pipe):
+class WNUT_17NERPipe(Pipe):
     """
     Conll2003的NER任务的处理Pipe, 该Pipe会（1）复制raw_words列，并命名为words; (2）在words, target列建立词表
-    (创建 :class:`backend.Vocabulary` 对象，所以在返回的DataBundle中将有两个Vocabulary); (3）将words，target列根据相应的
+    (创建 :class:`fastNLP.Vocabulary` 对象，所以在返回的DataBundle中将有两个Vocabulary); (3）将words，target列根据相应的
     Vocabulary转换为index。
     经过该Pipe过后，DataSet中的内容如下所示
 
@@ -186,7 +186,7 @@ class ENNERPipe(Pipe):
            "[AL-AIN, United, Arab, ...]", "[B-LOC, B-LOC, I-LOC, ...]"
            "[...]", "[...]"
 
-        :param ~backend.DataBundle data_bundle: 传入的DataBundle中的DataSet必须包含raw_words和ner两个field，且两个field的内容均为List[str]在传入DataBundle基础上原位修改。
+        :param ~fastNLP.DataBundle data_bundle: 传入的DataBundle中的DataSet必须包含raw_words和ner两个field，且两个field的内容均为List[str]在传入DataBundle基础上原位修改。
         :return DataBundle:
         """
         # 转换tag
@@ -220,7 +220,7 @@ class ENNERPipe(Pipe):
     def process_from_file(self, paths) -> DataBundle:
         """
 
-        :param paths: 支持路径类型参见 :class:`backend.io.loader.ConllLoader` 的load函数。
+        :param paths: 支持路径类型参见 :class:`fastNLP.io.loader.ConllLoader` 的load函数。
         :return: DataBundle
         """
         # 读取数据
@@ -231,7 +231,7 @@ class ENNERPipe(Pipe):
 
 
 
-from backend.io import OntoNotesNERLoader
+from fastNLP.io import OntoNotesNERLoader
 
 class OntoNotesNERPipe(Pipe):
     """
@@ -286,7 +286,7 @@ class OntoNotesNERPipe(Pipe):
            "[AL-AIN, United, Arab, ...]", "[B-LOC, B-LOC, I-LOC, ...]"
            "[...]", "[...]"
 
-        :param ~backend.DataBundle data_bundle: 传入的DataBundle中的DataSet必须包含raw_words和ner两个field，且两个field的内容均为List[str]在传入DataBundle基础上原位修改。
+        :param ~fastNLP.DataBundle data_bundle: 传入的DataBundle中的DataSet必须包含raw_words和ner两个field，且两个field的内容均为List[str]在传入DataBundle基础上原位修改。
         :return DataBundle:
         """
         # 转换tag

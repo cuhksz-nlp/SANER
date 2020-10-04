@@ -1,5 +1,5 @@
 
-from backend import Callback, Tester, DataSet
+from fastNLP import Callback, Tester, DataSet
 
 
 class EvaluateCallback(Callback):
@@ -12,12 +12,15 @@ class EvaluateCallback(Callback):
                  test_feature_data=None,
                  feature2id=None,
                  id2feature=None,
-                 context_num=10
+                 context_num=10,
+                 use_zen=False,
+                 zen_model=None,
+                 zen_dataset=None
                  ):
         """
-        :param ~backend.DataSet,Dict[~backend.DataSet] data: 传入DataSet对象，会使用Trainer中的metric对数据进行验证。如果需要传入多个
+        :param ~fastNLP.DataSet,Dict[~fastNLP.DataSet] data: 传入DataSet对象，会使用Trainer中的metric对数据进行验证。如果需要传入多个
             DataSet请通过dict的方式传入。
-        :param ~backend.Tester,Dict[~backend.DataSet] tester: Tester对象, 通过使用Tester对象，可以使得验证的metric与Trainer中
+        :param ~fastNLP.Tester,Dict[~fastNLP.DataSet] tester: Tester对象, 通过使用Tester对象，可以使得验证的metric与Trainer中
             的metric不一样。
         """
         super().__init__()
@@ -32,12 +35,15 @@ class EvaluateCallback(Callback):
         self.feature2id = feature2id
         self.id2feature = id2feature
         self.context_num = context_num
+        self.use_zen = use_zen
+        self.zen_model = zen_model
+        self.zen_dataset = zen_dataset
 
         if tester is not None:
             if isinstance(tester, dict):
                 for name, test in tester.items():
                     if not isinstance(test, Tester):
-                        raise TypeError(f"{name} in tester is not a valid backend.Tester.")
+                        raise TypeError(f"{name} in tester is not a valid fastNLP.Tester.")
                     self.testers['tester-' + name] = test
             if isinstance(tester, Tester):
                 self.testers['tester-test'] = tester
@@ -67,7 +73,10 @@ class EvaluateCallback(Callback):
                                 test_feature_data=self.test_feature_data,
                                 feature2id=self.feature2id,
                                 id2feature=self.id2feature,
-                                context_num=self.context_num
+                                context_num=self.context_num,
+                                use_zen=self.use_zen,
+                                zen_model=self.zen_model,
+                                zen_dataset=self.zen_dataset
                                 )
                 self.testers[key] = tester
 
