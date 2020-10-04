@@ -29,7 +29,7 @@ If you use or extend our work, please cite our paper at EMNLP-2020.
 ## Downloading Pre-trained Embeddings
 
 For English NER, we use two types of word embeddings, namely ELMo and BERT. Among them, ELMo can be automatically 
-downloaded by running the script `train_model.py`; bert can be downloaded pre-trained BERT-large-cased 
+downloaded by running the script `run.py`; bert can be downloaded pre-trained BERT-large-cased 
 from [Google](https://github.com/google-research/bert) or from [HuggingFace](https://s3.amazonaws.com/models.huggingface.co/bert/bert-large-cased.tar.gz). 
 If you download it from Google, you need to convert the model from TensorFlow version to PyTorch version.
 
@@ -40,4 +40,4 @@ All pretrained embeddings should be placed in `./data/`
 
 ## Run on sample data
 
-Run `train_model.py` to train a model on the small sample data under the `sample_data` directory.
+Run `run.py` to train a model on the small sample data under the `sample_data` directory.
