@@ -33,7 +33,7 @@ downloaded by running the script `run.py`; bert can be downloaded pre-trained BE
 from [Google](https://github.com/google-research/bert) or from [HuggingFace](https://s3.amazonaws.com/models.huggingface.co/bert/bert-large-cased.tar.gz). 
 If you download it from Google, you need to convert the model from TensorFlow version to PyTorch version.
 
-For Chinese NER, we also use three types of word embeddings, namely Tencent Embedding and ZEN. Among them, 
+For Chinese NER, we also use two types of word embeddings, namely Tencent Embedding and ZEN. Among them, 
 Tencent Embedding can be downloaded from [here](https://ai.tencent.com/ailab/nlp/embedding.html), ZEN can be downloaded from [here](https://github.com/sinovation/ZEN)
 
 All pretrained embeddings should be placed in `./data/`
