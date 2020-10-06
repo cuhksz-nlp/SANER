@@ -26,7 +26,7 @@ If you use or extend our work, please cite our paper at EMNLP-2020.
 - `tqdm==4.38.0`
 - `fastNLP==0.5`
 
-## Downloading Pre-trained Embeddings
+## Download Pre-trained Embeddings
 
 For English NER, we use two types of word embeddings, namely ELMo and BERT. Among them, ELMo can be automatically 
 downloaded by running the script `run.py`; bert can be downloaded pre-trained BERT-large-cased 
