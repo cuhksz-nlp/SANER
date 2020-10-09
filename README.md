@@ -38,6 +38,20 @@ Tencent Embedding can be downloaded from [here](https://ai.tencent.com/ailab/nlp
 
 All pretrained embeddings should be placed in `./data/`
 
+## Download SANER
+
+You can download the models we trained for each dataset from [here](data/saner.md). 
+
 ## Run on sample data
 
 Run `run.py` to train a model on the small sample data under the `sample_data` directory.
+
+## Datasets
+
+We use two English datasets (W16, W17) and a Chinese dataset (WB) in our paper. 
+
+For all datasets, you need to obtain the official data first, then put the data folder under the `data` directory. 
+
+## Training
+
+You can find the command lines to train models on a specific dataset in `run.py` for English datasets and `run_cn.py` for Chinese datasets. 

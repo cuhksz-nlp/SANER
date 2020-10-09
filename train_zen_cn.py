@@ -5,11 +5,10 @@ from torch import optim
 from fastNLP import SpanFPreRecMetric, BucketSampler
 from fastNLP.embeddings import StaticEmbedding, BertEmbedding, StackEmbedding
 from modules.pipe import CNNERPipe
-from get_knowledge import generate_knowledge_api
 
 from get_context import get_neighbor_for_vocab, build_instances
 
-from run_token_level_classification import BertTokenizer, ZenNgramDict, ZenForTokenClassification, load_examples, DataLoader, SequentialSampler
+from run_token_level_classification import BertTokenizer, ZenNgramDict, ZenForTokenClassification, load_examples
 from utils_token_level_task import PeopledailyProcessor
 
 import os
@@ -17,8 +16,6 @@ import argparse
 from modules.callbacks import EvaluateCallback
 
 from datetime import datetime
-import random
-import numpy as np
 
 import torch
 
@@ -50,35 +47,14 @@ args = parser.parse_args()
 
 
 dataset = args.dataset
-if dataset == 'resume':
-    n_heads = 4
-    head_dims = 64
-    num_layers = 2
-    lr = 0.0007
-    attn_type = 'adatrans'
-    n_epochs = 50
-elif dataset == 'weibo':
-    n_heads = 4
-    head_dims = 128
-    num_layers = 1
-    lr = 0.001
-    # lr = 5e-5
-    attn_type = 'adatrans'
-    n_epochs = 100
-elif dataset == 'ontonote4':
-    n_heads = 4
-    head_dims = 48
-    num_layers = 2
-    lr = 0.0007
-    attn_type = 'adatrans'
-    n_epochs = 100
-elif dataset == 'msra':
-    n_heads = 6
-    head_dims = 80
-    num_layers = 2
-    lr = 0.0007
-    attn_type = 'adatrans'
-    n_epochs = 100
+
+n_heads = 4
+head_dims = 128
+num_layers = 1
+lr = 0.001
+attn_type = 'adatrans'
+n_epochs = 50
+
 
 pos_embed = None
 
@@ -109,11 +85,6 @@ name = 'caches/{}_{}_{}_{}_{}.pkl'.format(dataset, model_type, encoding_type, no
 d_model = n_heads * head_dims
 dim_feedforward = int(2 * d_model)
 
-
-encoding_type = 'bioes'
-d_model = n_heads * head_dims
-dim_feedforward = int(2 * d_model)
-
 def print_time():
     now = datetime.now()
     return "-".join([str(now.year), str(now.month), str(now.day), str(now.hour), str(now.minute), str(now.second)])
@@ -130,27 +101,11 @@ def write_log(sent):
 
 @cache_results(name, _refresh=False)
 def load_data():
-    # 替换路径
-    if dataset == 'ontonote4':
-        paths = {'train':'../data/ontonote4/train.txt',
-                 "dev":'../data/ontonote4/test.txt',
-                 "test":'../data/ontonote4/test.txt'}
-        min_freq = 2
-    elif dataset == 'weibo':
-        paths = {'train': 'data/weibo/train.txt',
-                 'dev':'data/weibo/test.txt',
-                 'test':'data/weibo/test.txt'}
-        min_freq = 1
-    elif dataset == 'resume':
-        paths = {'train': '../data/resume/train.txt',
-                 'dev':'../data/resume/test.txt',
-                 'test':'../data/resume/test.txt'}
-        min_freq = 1
-    elif dataset == 'msra':
-        paths = {'train': '../data/msra/train.txt',
-                 'dev':'../data/msra/test.txt',
-                 'test':'../data/msra/test.txt'}
-        min_freq = 2
+
+    paths = {'train': 'data/{}/train.txt'.format(dataset),
+             'dev':'data/{}/dev.txt'.format(dataset),
+             'test':'data/{}/test.txt'.format(dataset)}
+    min_freq = 2
     data_bundle = CNNERPipe(bigrams=True, encoding_type=encoding_type).process_from_file(paths)
 
     dict_save_path = os.path.join("data/{}/data.pth".format(dataset))
@@ -161,7 +116,6 @@ def load_data():
     train_feature_data, test_feature_data = build_instances(
         "data/{}".format(dataset), context_num, context_dict
     )
-    # print("feature_num: ", len(feature2id))
 
     embed = StaticEmbedding(data_bundle.get_vocab('chars'),
                             model_dir_or_name='data/gigaword_chn.all.a2b.uni.ite50.vec',
@@ -186,9 +140,6 @@ def load_data():
     return data_bundle, embed, bi_embed, train_feature_data, test_feature_data, context_word2id, context_id2word
 
 data_bundle, embed, bi_embed, train_feature_data, test_feature_data, feature2id, id2feature = load_data()
-
-# print(data_bundle.get_vocab('target').idx2word)
-# exit()
 
 vocab_size = len(data_bundle.get_vocab('chars'))
 feature_vocab_size = len(feature2id)
@@ -238,10 +189,6 @@ model = SAModel(tag_vocab=data_bundle.get_vocab('target'), embed=embed, num_laye
               highway_layer=highway_layer,
               use_zen=args.zen_model != ""
               )
-
-# print(model)
-# print("Parameter Num: ", sum(param.numel() for param in model.parameters() if param.requires_grad))
-# print("Parameter Num: ", sum(param.numel() for param in model.kv_memory.parameters() if param.requires_grad))
 
 optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
 
