@@ -56,6 +56,8 @@ For `W17`, you can download the dataset from [here](https://github.com/gaguilar/
 
 For `WB`, you can download the dataset from [here](https://github.com/hltcoe/golden-horse/tree/master/data) and then put the `weiboNER.conll.train`, `weiboNER.conll.dev` and `weiboNER.conll.test` files in `data/WB`.
 
+All the data files should be named as `train.txt`, `test.txt` and `dev.txt` in corresponding dictionaries. 
+
 ## Training
 
 You can find the command lines to train models on a specific dataset in `run.py` for English datasets and `run_cn.py` for Chinese datasets. 
