@@ -28,7 +28,7 @@ If you use or extend our work, please cite our paper at EMNLP-2020.
 
 ## Download Pre-trained Embeddings
 
-For English NER, we use two types of word embeddings, namely ELMo and BERT. Among them, ELMo can be automatically 
+For English NER, we use two types of word embeddings, namely ELMo and BERT. Between them, ELMo can be automatically 
 downloaded by running the script `run.py`; bert can be downloaded pre-trained BERT-large-cased 
 from [Google](https://github.com/google-research/bert) or from [HuggingFace](https://s3.amazonaws.com/models.huggingface.co/bert/bert-large-cased.tar.gz). 
 If you download it from Google, you need to convert the model from TensorFlow version to PyTorch version.
