@@ -1,6 +1,6 @@
 # SANER
 
-This is the implementation of [Named Entity Recognition for Social Media Texts with Semantic Augmentation]() at EMNLP-2020.
+This is the implementation of [Named Entity Recognition for Social Media Texts with Semantic Augmentation](https://arxiv.org/pdf/2010.15458.pdf) at EMNLP-2020.
 
 ## Citations
 
