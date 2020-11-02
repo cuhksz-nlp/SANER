@@ -42,6 +42,10 @@ All pretrained embeddings should be placed in `./data/`
 
 You can download the models we trained for each dataset from [here](data/saner.md). 
 
+## Data Preprocess
+
+After downloading `Tencent Embedding`, you need to extract the unigrams according to `python data_process.py --file_path=${PATH_TO_TENCENT_EMBEDDING}$`
+
 ## Run on sample data
 
 Run `run.py` to train a model on the small sample data under the `sample_data` directory.
