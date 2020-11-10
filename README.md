@@ -38,13 +38,11 @@ Tencent Embedding can be downloaded from [here](https://ai.tencent.com/ailab/nlp
 
 All pretrained embeddings should be placed in `./data/`
 
+After downloading `Tencent Embedding`, you need to extract the unigrams according to `python data_process.py --file_path=${PATH_TO_TENCENT_EMBEDDING}$`
+
 ## Download SANER
 
 You can download the models we trained for each dataset from [here](data/saner.md). 
-
-## Data Preprocess
-
-After downloading `Tencent Embedding`, you need to extract the unigrams according to `python data_process.py --file_path=${PATH_TO_TENCENT_EMBEDDING}$`
 
 ## Run on sample data
 
@@ -60,7 +58,7 @@ For `W17`, you can download the dataset from [here](https://github.com/gaguilar/
 
 For `WB`, you can download the dataset from [here](https://github.com/hltcoe/golden-horse/tree/master/data) and then put the `weiboNER_2nd_conll.train`, `weiboNER_2nd_conll.dev` and `weiboNER_2nd_conll.test` files in `data/WB`.
 
-All the data files should be named as `train.txt`, `test.txt` and `dev.txt` in corresponding dictionaries. 
+For all datasets, you can run the script `data_preprocess.py` with `python data_preprocess.py --dataset ${dataset}$ --data_dir ${data_dir}$` to preprocess the aforementioned datasets automatically.
 
 ## Training
 
