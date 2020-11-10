@@ -1,4 +1,4 @@
-from models.SANER import SAModel
+from models.TENER import TENER
 from fastNLP import cache_results
 from fastNLP import Trainer, GradientClipCallback, WarmupCallback
 from torch import optim
@@ -155,7 +155,7 @@ test_data = list(data_bundle.get_dataset("test"))
 vocab_size = len(data_bundle.get_vocab('chars'))
 feature_vocab_size = len(feature2id)
 
-model = SAModel(tag_vocab=data_bundle.get_vocab('target'), embed=embed, num_layers=num_layers,
+model = TENER(tag_vocab=data_bundle.get_vocab('target'), embed=embed, num_layers=num_layers,
               d_model=d_model, n_head=n_heads,
               feedforward_dim=dim_feedforward, dropout=trans_dropout,
               after_norm=after_norm, attn_type=attn_type,

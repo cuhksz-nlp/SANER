@@ -201,7 +201,7 @@ _dim_map = {
 }
 
 
-class SAModel(nn.Module):
+class TENER(nn.Module):
     def __init__(self, tag_vocab, embed, num_layers, d_model, n_head, feedforward_dim, dropout,
                  after_norm=True, attn_type='adatrans',  bi_embed=None,
                  fc_dropout=0.3, pos_embed=None, scale=False, dropout_attn=None,
