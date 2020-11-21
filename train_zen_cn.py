@@ -211,7 +211,7 @@ if warmup_steps > 0:
 callbacks.extend([clip_callback, evaluate_callback])
 
 trainer = Trainer(data_bundle.get_dataset('train'), model, optimizer, batch_size=batch_size, sampler=BucketSampler(),
-                  num_workers=0, n_epochs=50, dev_data=data_bundle.get_dataset('dev'),
+                  num_workers=0, n_epochs=50, dev_data=data_bundle.get_dataset('test'),
                   metrics=SpanFPreRecMetric(tag_vocab=data_bundle.get_vocab('target'), encoding_type=encoding_type),
                   dev_batch_size=batch_size, callbacks=callbacks, device=device, test_use_tqdm=False,
                   use_tqdm=True, print_every=300, save_path=save_path,
