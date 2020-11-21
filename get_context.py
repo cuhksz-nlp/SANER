@@ -81,12 +81,15 @@ def build_context(data_list, num, context_dict):
 
 def build_instances(data_dir_path, num, context_dict):
     trainPath = os.path.join(data_dir_path, "train.txt")
+    devPath = os.path.join(data_dir_path, "dev.txt")
     testPath = os.path.join(data_dir_path, "test.txt")
 
     train_list, _ = read_txt(trainPath)
+    dev_list, _ = read_txt(devPath)
     test_list, _ = read_txt(testPath)
 
     train_feature_list = build_context(train_list, num, context_dict)
+    dev_feature_list = build_context(dev_list, num, context_dict)
     test_feature_list = build_context(test_list, num, context_dict)
 
-    return train_feature_list, test_feature_list
+    return train_feature_list, dev_feature_list, test_feature_list

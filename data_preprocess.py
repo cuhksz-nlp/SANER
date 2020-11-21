@@ -16,7 +16,7 @@ def weibo_preprocessor(dataset, data_path, mode="train"):
         else:
             row = row.split("\t")
             if row:
-                ret_list.append("{} {}".format(row[0][:-1], row[1]))
+                ret_list.append("{} {}".format(row[0][:1], row[1]))
     with open(new_path, "w", encoding="utf-8") as f:
         f.write("\n".join(ret_list))
 

@@ -25,7 +25,7 @@ else:
     device = "cpu"
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', type=str, default='resume', choices=['weibo', 'resume', 'ontonotes', 'msra'])
+parser.add_argument('--dataset', type=str)
 parser.add_argument('--seed', type=int, default=20)
 parser.add_argument('--log', type=str, default=None)
 parser.add_argument('--lr', type=float, default=0.0001)
@@ -89,7 +89,7 @@ def print_time():
     now = datetime.now()
     return "-".join([str(now.year), str(now.month), str(now.day), str(now.hour), str(now.minute), str(now.second)])
 
-save_path = "ckpt/elmo_{}_{}_{}_{}.pth".format(dataset, model_type, context_num, print_time())
+save_path = "ckpt/{}_{}_{}_{}.pth".format(dataset, model_type, context_num, print_time())
 
 logPath = args.log
 
@@ -113,7 +113,7 @@ def load_data():
         data_bundle.get_vocab('chars').word2idx, glove_path, dict_save_path
     )
 
-    train_feature_data, test_feature_data = build_instances(
+    train_feature_data, dev_feature_data, test_feature_data = build_instances(
         "data/{}".format(dataset), context_num, context_dict
     )
 
@@ -137,9 +137,9 @@ def load_data():
 
     embed = StackEmbedding([embed, tencent_embed, bert_embed], dropout=0, word_dropout=0.02)
 
-    return data_bundle, embed, bi_embed, train_feature_data, test_feature_data, context_word2id, context_id2word
+    return data_bundle, embed, bi_embed, train_feature_data, dev_feature_data, test_feature_data, context_word2id, context_id2word
 
-data_bundle, embed, bi_embed, train_feature_data, test_feature_data, feature2id, id2feature = load_data()
+data_bundle, embed, bi_embed, train_feature_data, dev_feature_data, test_feature_data, feature2id, id2feature = load_data()
 
 vocab_size = len(data_bundle.get_vocab('chars'))
 feature_vocab_size = len(feature2id)
@@ -167,6 +167,7 @@ if args.zen_model:
     max_seq_len = 512
 
     zen_train_dataset = load_examples(data_dir, max_seq_len, tokenizer, ngram_dict, processor, label_list, mode="train")
+    zen_dev_dataset = load_examples(data_dir, max_seq_len, tokenizer, ngram_dict, processor, label_list, mode="dev")
     zen_test_dataset = load_examples(data_dir, max_seq_len, tokenizer, ngram_dict, processor, label_list, mode="test")
 
     print("[Info] Zen Mode, Zen dataset loaded ...")
@@ -190,7 +191,7 @@ model = TENER(tag_vocab=data_bundle.get_vocab('target'), embed=embed, num_layers
               use_zen=args.zen_model != ""
               )
 
-optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
+optimizer = optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.99))
 
 callbacks = []
 clip_callback = GradientClipCallback(clip_type='value', clip_value=5)
@@ -210,7 +211,7 @@ if warmup_steps > 0:
 callbacks.extend([clip_callback, evaluate_callback])
 
 trainer = Trainer(data_bundle.get_dataset('train'), model, optimizer, batch_size=batch_size, sampler=BucketSampler(),
-                  num_workers=0, n_epochs=100, dev_data=data_bundle.get_dataset('test'),
+                  num_workers=0, n_epochs=50, dev_data=data_bundle.get_dataset('dev'),
                   metrics=SpanFPreRecMetric(tag_vocab=data_bundle.get_vocab('target'), encoding_type=encoding_type),
                   dev_batch_size=batch_size, callbacks=callbacks, device=device, test_use_tqdm=False,
                   use_tqdm=True, print_every=300, save_path=save_path,

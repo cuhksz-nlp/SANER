@@ -52,6 +52,8 @@ def load_examples(data_dir, max_seq_len, tokenizer, ngram_dict, processor, label
         examples = processor.get_train_examples(data_dir)
     elif mode == "test":
         examples = processor.get_test_examples(data_dir)
+    elif mode == "dev":
+        examples = processor.get_dev_examples(data_dir)
     features = convert_examples_to_features(examples, label_list, max_seq_len, tokenizer, ngram_dict)
     all_input_ids = torch.tensor([f.input_ids for f in features], dtype=torch.long)
     all_input_mask = torch.tensor([f.input_mask for f in features], dtype=torch.long)

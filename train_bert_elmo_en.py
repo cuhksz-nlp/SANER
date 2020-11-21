@@ -131,7 +131,7 @@ def load_data():
         data.get_vocab('words').word2idx, glove_path, dict_save_path
     )
 
-    train_feature_data, test_feature_data = build_instances(
+    train_feature_data, dev_feature_data, test_feature_data = build_instances(
         "../data/{}".format(dataset), context_num, context_dict
     )
 
@@ -144,12 +144,13 @@ def load_data():
                                pooled_cls=True, requires_grad=False, auto_truncate=False)
     embed = StackEmbedding([embed, bert_embed], dropout=0, word_dropout=0.02)
 
-    return data, embed, train_feature_data, test_feature_data, context_word2id, context_id2word
+    return data, embed, train_feature_data, dev_feature_data, test_feature_data, context_word2id, context_id2word
 
 
-data_bundle, embed, train_feature_data, test_feature_data, feature2id, id2feature = load_data()
+data_bundle, embed, train_feature_data, dev_feature_data, test_feature_data, feature2id, id2feature = load_data()
 
 train_data = list(data_bundle.get_dataset("train"))
+dev_data = list(data_bundle.get_dataset("dev"))
 test_data = list(data_bundle.get_dataset("test"))
 
 vocab_size = len(data_bundle.get_vocab('chars'))
@@ -172,13 +173,7 @@ model = TENER(tag_vocab=data_bundle.get_vocab('target'), embed=embed, num_layers
               highway_layer=highway_layer
               )
 
-print("Parameter Num: ", sum(param.numel() for param in model.parameters() if param.requires_grad))
-print("Parameter Num: ", sum(param.numel() for param in model.kv_memory.parameters() if param.requires_grad))
-
-if optim_type == 'sgd':
-    optimizer = optim.SGD(model.parameters(), lr=lr, momentum=0.9)
-else:
-    optimizer = optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.99))
+optimizer = optim.Adam(model.parameters(), lr=lr, betas=(0.9, 0.99))
 
 callbacks = []
 clip_callback = GradientClipCallback(clip_type='value', clip_value=5)
@@ -195,7 +190,7 @@ if warmup_steps > 0:
 callbacks.extend([clip_callback, evaluate_callback])
 
 trainer = Trainer(data_bundle.get_dataset('train'), model, optimizer, batch_size=batch_size, sampler=BucketSampler(),
-                  num_workers=0, n_epochs=50, dev_data=data_bundle.get_dataset('test'),
+                  num_workers=0, n_epochs=50, dev_data=data_bundle.get_dataset('dev'),
                   metrics=SpanFPreRecMetric(tag_vocab=data_bundle.get_vocab('target'), encoding_type=encoding_type),
                   dev_batch_size=batch_size, callbacks=callbacks, device=device, test_use_tqdm=False,
                   use_tqdm=True, print_every=300, save_path=save_path,
