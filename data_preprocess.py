@@ -51,14 +51,14 @@ def w17_preprocess(dataset, data_path, mode="train"):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, default='weibo', choices=['weibo', 'W16', 'W17'])
+    parser.add_argument('--dataset', type=str, default='WB', choices=['WB', 'W16', 'W17'])
     parser.add_argument('--data_dir', type=str, default='')
     args = parser.parse_args()
 
     dataset = args.dataset
     data_dir = args.data_dir
 
-    if dataset == "weibo":
+    if dataset == "WB":
         modes = ["train", "test", "dev"]
         for mode in modes:
             data_path = "{}/weiboNER_2nd_conll.{}".format(data_dir, mode)
