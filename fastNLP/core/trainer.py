@@ -719,7 +719,10 @@ class Trainer(object):
         for index in indices:
             feature_data = self.train_feature_data[index]
             temp_len = len(feature_data)
-            ret_list.append(feature_data + [[0] * self.context_num for _ in range(seq_len - temp_len)])
+            if temp_len >= seq_len:
+                ret_list.append(feature_data[:seq_len])
+            else:
+                ret_list.append(feature_data + [[0] * self.context_num for _ in range(seq_len - temp_len)])
         return torch.tensor(ret_list)
 
     def get_zen_data(self, indices, max_seq_len):
