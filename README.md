@@ -52,14 +52,6 @@ Run `run.py` to train a model on the small sample data under the `sample_data` d
 
 We use two English datasets (`W16`, `W17`) and a Chinese dataset (`WB`) in our paper. 
 
-For `W16`, you can download the dataset from [here](https://github.com/aritter/twitter_nlp/tree/master/data/annotated/wnut16/data) and then put the `train`, `dev` and  `test` files in `data/W16`.
-
-For `W17`, you can download the dataset from [here](https://github.com/gaguilar/NER-WNUT17/tree/master/data) and then put the `emerging.train.conll`, `emerging.dev.conll` and `emerging.test.conll` files in `data/W17`. 
-
-For `WB`, you can download the dataset from [here](https://github.com/hltcoe/golden-horse/tree/master/data) and then put the `weiboNER_2nd_conll.train`, `weiboNER_2nd_conll.dev` and `weiboNER_2nd_conll.test` files in `data/WB`.
-
-For all datasets, you can run the script `data_preprocess.py` with `python data_preprocess.py --dataset ${dataset}$ --data_dir ${data_dir}$` to preprocess the aforementioned datasets automatically.
-
 ## Training
 
 You can find the command lines to train models on a specific dataset in `run.py` for English datasets and `run_cn.py` for Chinese datasets. 
