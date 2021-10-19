@@ -36,6 +36,8 @@ If you download it from Google, you need to convert the model from TensorFlow ve
 For Chinese NER, we also use two types of word embeddings, namely Tencent Embedding and ZEN. Among them, 
 Tencent Embedding can be downloaded from [here](https://ai.tencent.com/ailab/nlp/zh/embedding.html), ZEN can be downloaded from [here](https://github.com/sinovation/ZEN)
 
+Also, you can download gigaword embeddings from [here](https://github.com/jiesutd/LatticeLSTM)
+
 All pretrained embeddings should be placed in `./data/`
 
 After downloading `Tencent Embedding`, you need to extract the unigrams according to `python data_process.py --file_path=${PATH_TO_TENCENT_EMBEDDING}$`
