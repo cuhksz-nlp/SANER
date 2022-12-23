@@ -1,6 +1,13 @@
 # SANER
 
-This is the implementation of [Named Entity Recognition for Social Media Texts with Semantic Augmentation](https://arxiv.org/pdf/2010.15458.pdf) at EMNLP-2020.
+This is the implementation of [Named Entity Recognition for Social Media Texts with Semantic Augmentation](https://aclanthology.org/2020.emnlp-main.107/) at EMNLP-2020.
+
+
+**Visit our [homepage](https://github.com/synlp/.github) to find more our recent research and softwares for NLP (e.g., pre-trained LM, POS tagging, NER, sentiment analysis, relation extraction, datasets, etc.).**
+
+## Upgrades of SANER
+
+We are improving SANER. For updates, please visit [HERE](https://github.com/synlp/SANER).
 
 ## Citations
 
